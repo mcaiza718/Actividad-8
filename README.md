@@ -1,6 +1,5 @@
-🧰 Tecnologías utilizadas
+ Tecnologías utilizadas
 Backend
-
 -Node.js
 -Express
 -MySQL
