@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro</title>
+</head>
+<body>
+
+<h2>Registro de usuario</h2>
+
+<input id="nombre" placeholder="Nombre"><br><br>
+<input id="email" placeholder="Correo"><br><br>
+<input id="password" type="password" placeholder="Contraseña"><br><br>
+
+<button onclick="registrar()">Registrarse</button>
+
+<p>
+  ¿Ya tienes cuenta?
+  <a href="login.html">Iniciar sesión</a>
+</p>
+
+<script>
+function registrar() {
+  fetch("http://localhost:3000/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      nombre: nombre.value,
+      email: email.value,
+      password: password.value
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    alert("Usuario registrado correctamente");
+    window.location.href = "login.html";
+  });
+}
+</script>
+
+</body>
+</html>

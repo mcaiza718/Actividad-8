@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Movimientos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 40px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #16a34a;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #15803d;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #16a34a;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Registrar movimiento</h2>
+
+<div class="card">
+  <input id="producto_id" placeholder="ID del producto">
+
+  <select id="tipo">
+    <option value="entrada">Entrada</option>
+    <option value="salida">Salida</option>
+  </select>
+
+  <input id="cantidad" type="number" placeholder="Cantidad">
+
+  <button onclick="guardar()">Guardar movimiento</button>
+</div>
+
+<h2>Historial de movimientos</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Producto</th>
+      <th>Tipo</th>
+      <th>Cantidad</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody id="tabla"></tbody>
+</table>
+
+<script>
+function guardar() {
+  fetch("http://localhost:3000/movimientos", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      producto_id: producto_id.value,
+      tipo: tipo.value,
+      cantidad: cantidad.value
+    })
+  })
+  .then(r => r.json())
+  .then(() => {
+    alert("Movimiento registrado");
+    cargar();
+  });
+}
+
+function cargar() {
+  fetch("http://localhost:3000/movimientos")
+    .then(r => r.json())
+    .then(data => {
+      tabla.innerHTML = "";
+      data.forEach(m => {
+        tabla.innerHTML += `
+          <tr>
+            <td>${m.id}</td>
+            <td>${m.nombre}</td>
+            <td>${m.tipo}</td>
+            <td>${m.cantidad}</td>
+            <td>${m.fecha}</td>
+          </tr>
+        `;
+      });
+    });
+}
+
+cargar();
+</script>
+
+</body>
+</html>
